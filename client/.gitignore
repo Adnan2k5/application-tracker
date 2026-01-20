@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.next/
+./keys
+client/keys.txt
+client/keys.txt
+.env
+.env.local
+*.key
+*.pem
