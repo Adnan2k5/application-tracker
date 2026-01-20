@@ -1,11 +1,9 @@
+import { getCurrentUser } from "@/app/lib/sessions/session";
 import { NextResponse } from "next/server";
-
-const GOOGLE_CLIENT_ID =
-  "836719910691-265uu8104j0ok3dn7jhaqpaljni9vlom.apps.googleusercontent.com";
 
 export async function GET() {
   const params = new URLSearchParams({
-    client_id: GOOGLE_CLIENT_ID,
+    client_id: process.env.GOOGLE_CLIENT_ID!,
     redirect_uri: "http://localhost:3000/api/auth/callback/google",
     response_type: "code",
     scope: [
@@ -18,7 +16,11 @@ export async function GET() {
     prompt: "consent",
   });
 
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  const url = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 
-  return NextResponse.redirect(googleAuthUrl);
+  const getUser = await getCurrentUser();
+  if (getUser?.id) {
+    return NextResponse.redirect("http://localhost:3000/dashboard");
+  }
+  return NextResponse.redirect(url);
 }

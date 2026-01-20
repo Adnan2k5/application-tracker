@@ -8,3 +8,4 @@ client/keys.txt
 .env.local
 *.key
 *.pem
+/app/generated/prisma

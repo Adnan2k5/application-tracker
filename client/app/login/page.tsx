@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useState } from "react";
 import GoogleSvg from "../components/ui/google_svg";
 import { useForm } from "react-hook-form";
@@ -185,12 +185,14 @@ export default function LoginPage() {
                 </div>
               </div>
               <div className="mt-6 gap-3 flex item-center justify-center">
-                <button className="flex items-center justify-center px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all">
-                  <GoogleSvg />
-                  <span className="ml-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    Google
-                  </span>
-                </button>
+                <Link href="/api/auth/google">
+                  <button className="flex items-center justify-center px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all">
+                    <GoogleSvg />
+                    <span className="ml-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                      Google
+                    </span>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
