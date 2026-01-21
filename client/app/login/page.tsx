@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import GoogleSvg from "../components/ui/google_svg";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 type FormData = {
   email: string;
@@ -17,16 +19,62 @@ const style =
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const login = async (data: FormData) => {
+    try {
+      setIsLoading(true);
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log("Login response:", res);
+      if (res.ok) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signUp = async (data: FormData) => {
+    try {
+      setIsLoading(true);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Sign Up error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onSubmit = (data: FormData) => {
+    if (isLogin) {
+      login(data);
+    } else {
+      signUp(data);
+    }
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-zinc-50 via-zinc-100 to-zinc-50 dark:from-zinc-950 dark:via-black dark:to-zinc-950 p-4">
@@ -166,9 +214,12 @@ export default function LoginPage() {
               )}
 
               <button
+                onClick={handleSubmit(onSubmit)}
                 type="submit"
-                className="w-full py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
+                disabled={isLoading}
+                className="w-full py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
+                {isLoading && <Spinner className="size-5" />}
                 {isLogin ? "Sign In" : "Create Account"}
               </button>
             </form>

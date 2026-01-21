@@ -25,8 +25,8 @@ export async function GET(req: NextRequest) {
       name: googleUser.name,
       refreshToken: tokens.refresh_token,
     });
-    const sessionId = await createSession(user.id);
-    (await cookies()).set("sessionId", sessionId, {
+    const token = await createSession(user.id);
+    (await cookies()).set("sessionId", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
