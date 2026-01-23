@@ -3,7 +3,6 @@ import { getGoogleToken, decodeIdToken } from "@/app/lib/auth/google";
 import { findOrCreateUserFromGoogle } from "@/app/lib/users/service";
 import { cookies } from "next/headers";
 import { createSession } from "../../../../lib/sessions/session";
-import path from "path";
 
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");

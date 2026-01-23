@@ -1,10 +1,8 @@
 import { prisma } from "@/app/lib/db/prisma";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { NextResponse } from "next/dist/server/web/spec-extension/response";
 
 dotenv.config();
 
